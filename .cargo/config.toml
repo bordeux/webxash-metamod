@@ -1,0 +1,14 @@
+# Cross-compilation configuration for HLDS (32-bit)
+
+[target.x86_64-unknown-linux-gnu]
+rustflags = ["-C", "link-arg=-Wl,--no-undefined"]
+
+[target.i686-unknown-linux-gnu]
+rustflags = ["-C", "link-arg=-Wl,--no-undefined"]
+
+[target.i686-pc-windows-gnu]
+linker = "i686-w64-mingw32-gcc"
+rustflags = ["-C", "target-feature=+crt-static"]
+
+[target.i686-pc-windows-msvc]
+rustflags = ["-C", "target-feature=+crt-static"]
