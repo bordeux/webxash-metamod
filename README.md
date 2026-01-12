@@ -109,6 +109,15 @@ Static file server for game assets. Serves files from the HLDS `cstrike/` direct
 
 **Example:** `/cstrike/sound/weapons/ak47-1.wav`
 
+### GET /resources.jsonl
+Returns a list of all available game assets in [JSON Lines](https://jsonlines.org/) format. Generated once on server startup for optimal performance.
+
+**Response format:** Each line is a JSON object with `path` and `size`:
+```json
+{"path":"sound/weapons/ak47-1.wav","size":12345}
+{"path":"maps/de_dust2.bsp","size":2345678}
+```
+
 ## WebSocket Signaling Protocol
 
 Messages are JSON objects with `event` and `data` fields:

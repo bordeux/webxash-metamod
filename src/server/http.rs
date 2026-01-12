@@ -19,13 +19,24 @@ const ALLOWED_FOLDERS: &[&str] = &["sound", "sprites", "gfx", "maps", "models", 
 /// HTTP/WebSocket server
 pub struct Server {
     config: Arc<PluginConfig>,
+    /// Cached resources.jsonl content (generated once on startup)
+    resources_jsonl: Arc<String>,
 }
 
 impl Server {
     /// Create a new server instance.
     pub fn new(config: PluginConfig) -> Self {
+        // Generate resources.jsonl once at startup
+        let resources_jsonl = generate_resources_jsonl();
+        println!(
+            "[WEBXASH] Generated resources.jsonl ({} bytes, {} files)",
+            resources_jsonl.len(),
+            resources_jsonl.lines().count()
+        );
+
         Self {
             config: Arc::new(config),
+            resources_jsonl: Arc::new(resources_jsonl),
         }
     }
 
@@ -46,9 +57,11 @@ impl Server {
             };
 
             let config = self.config.clone();
+            let resources_jsonl = self.resources_jsonl.clone();
 
             tokio::spawn(async move {
-                if let Err(e) = handle_connection(stream, config, peer_addr).await {
+                if let Err(e) = handle_connection(stream, config, resources_jsonl, peer_addr).await
+                {
                     // Ignore normal connection close errors
                     let err_str = e.to_string();
                     if !err_str.contains("connection closed")
@@ -66,6 +79,7 @@ impl Server {
 async fn handle_connection(
     stream: TcpStream,
     config: Arc<PluginConfig>,
+    resources_jsonl: Arc<String>,
     peer_addr: SocketAddr,
 ) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     // Peek at the first bytes to determine request type
@@ -110,7 +124,7 @@ async fn handle_connection(
         handle_websocket(stream, config, client_id).await;
     } else {
         // Handle HTTP request
-        handle_http_request(stream, &first_line, &config).await?;
+        handle_http_request(stream, &first_line, &config, &resources_jsonl).await?;
     }
 
     Ok(())
@@ -128,6 +142,7 @@ async fn handle_http_request(
     mut stream: TcpStream,
     first_line: &str,
     _config: &PluginConfig,
+    resources_jsonl: &str,
 ) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     let parts: Vec<&str> = first_line.split_whitespace().collect();
     let method = parts.first().unwrap_or(&"GET");
@@ -145,6 +160,17 @@ async fn handle_http_request(
     // Handle static file serving for /cstrike/*
     if *method == "GET" && path.starts_with("/cstrike/") {
         return serve_static_file(&mut stream, path).await;
+    }
+
+    // Handle /resources.jsonl endpoint
+    if *method == "GET" && *path == "/resources.jsonl" {
+        let response = format!(
+            "HTTP/1.1 200 OK\r\n{CORS_HEADERS}\r\nContent-Type: application/x-ndjson\r\nContent-Length: {}\r\nConnection: close\r\n\r\n{}",
+            resources_jsonl.len(),
+            resources_jsonl
+        );
+        stream.write_all(response.as_bytes()).await?;
+        return Ok(());
     }
 
     let (status, content_type, body) = match (*method, *path) {
@@ -305,4 +331,72 @@ fn uuid_simple() -> String {
         .unwrap_or_default();
 
     format!("{:x}{:x}", now.as_secs(), now.subsec_nanos())
+}
+
+/// Generate resources.jsonl content by scanning all allowed folders.
+/// Each line contains a JSON object with "path" and "size" fields.
+fn generate_resources_jsonl() -> String {
+    let mut lines = Vec::new();
+    let base_path = Path::new("cstrike");
+
+    for folder in ALLOWED_FOLDERS {
+        let folder_path = base_path.join(folder);
+        if folder_path.exists() {
+            scan_directory_recursive(&folder_path, base_path, &mut lines);
+        }
+    }
+
+    lines.join("\n")
+}
+
+/// Recursively scan a directory and add file entries to the lines vector.
+fn scan_directory_recursive(dir: &Path, base_path: &Path, lines: &mut Vec<String>) {
+    let entries = match std::fs::read_dir(dir) {
+        Ok(e) => e,
+        Err(_) => return,
+    };
+
+    for entry in entries.flatten() {
+        let path = entry.path();
+
+        if path.is_dir() {
+            // Recurse into subdirectories
+            scan_directory_recursive(&path, base_path, lines);
+        } else if path.is_file() {
+            // Get file metadata for size
+            if let Ok(metadata) = std::fs::metadata(&path) {
+                // Get relative path from cstrike folder
+                if let Ok(relative) = path.strip_prefix(base_path) {
+                    let path_str = relative.to_string_lossy().replace('\\', "/");
+                    let size = metadata.len();
+
+                    // Format as JSON line
+                    lines.push(format!(
+                        r#"{{"path":"{}","size":{}}}"#,
+                        escape_json_string(&path_str),
+                        size
+                    ));
+                }
+            }
+        }
+    }
+}
+
+/// Escape special characters in a JSON string.
+fn escape_json_string(s: &str) -> String {
+    let mut result = String::with_capacity(s.len());
+    for c in s.chars() {
+        match c {
+            '"' => result.push_str("\\\""),
+            '\\' => result.push_str("\\\\"),
+            '\n' => result.push_str("\\n"),
+            '\r' => result.push_str("\\r"),
+            '\t' => result.push_str("\\t"),
+            c if c.is_control() => {
+                result.push_str(&format!("\\u{:04x}", c as u32));
+            }
+            c => result.push(c),
+        }
+    }
+    result
 }
