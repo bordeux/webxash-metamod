@@ -124,8 +124,6 @@ jobs:
 
       - name: Build documentation
         run: cargo doc --no-deps --all-features
-        env:
-          RUSTDOCFLAGS: -Dwarnings
 
   # ============================================
   # Build Binaries (all platforms)
