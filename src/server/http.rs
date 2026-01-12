@@ -95,12 +95,7 @@ async fn handle_connection(
             upgrade_header = true;
         }
         if line_lower.starts_with("sec-websocket-key:") {
-            ws_key = line
-                .split(':')
-                .nth(1)
-                .unwrap_or("")
-                .trim()
-                .to_string();
+            ws_key = line.split(':').nth(1).unwrap_or("").trim().to_string();
         }
 
         headers.push_str(&line);

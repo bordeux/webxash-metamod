@@ -128,10 +128,9 @@ fn run_server(
 
             // Check for shutdown command
             _ = async {
-                while let Some(cmd) = rx.recv().await {
-                    match cmd {
-                        RuntimeCommand::Shutdown => break,
-                    }
+                // Wait for any command (currently only Shutdown exists)
+                if let Some(RuntimeCommand::Shutdown) = rx.recv().await {
+                    // Shutdown received
                 }
             } => {
                 println!("[WEBXASH] Shutdown command received");

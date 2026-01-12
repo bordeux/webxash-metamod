@@ -35,15 +35,15 @@ jobs:
           # Linux 32-bit (primary HLDS target)
           - target: i686-unknown-linux-gnu
             os: ubuntu-22.04
-            artifact_name: libwebxash3d_metamod.so
-            asset_name: webxash3d-metamod-linux-i686
+            artifact_name: libwebxash_metamod.so
+            asset_name: webxash-metamod-linux-i686
             use_cross: true
 
           # Windows 32-bit (for Windows HLDS)
           - target: i686-pc-windows-gnu
             os: ubuntu-22.04
-            artifact_name: webxash3d_metamod.dll
-            asset_name: webxash3d-metamod-windows-i686
+            artifact_name: webxash_metamod.dll
+            asset_name: webxash-metamod-windows-i686
             use_cross: true
 
     steps:

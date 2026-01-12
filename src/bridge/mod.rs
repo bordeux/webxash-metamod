@@ -47,9 +47,7 @@ impl Bridge {
         let local_addr = udp_socket.local_addr()?;
         println!(
             "[WEBXASH] Bridge {}: UDP socket {} -> {}",
-            client_id,
-            local_addr,
-            server_addr
+            client_id, local_addr, server_addr
         );
 
         Ok(Self {

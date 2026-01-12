@@ -11,12 +11,12 @@ Use conventional commits format: `feat:`, `fix:`, `docs:`, `refactor:`, `chore:`
 
 ## Project Summary
 
-**webxash3d-metamod** is a Rust-based Metamod plugin that embeds a WebRTC-to-UDP proxy directly into HLDS (Half-Life Dedicated Server). It allows browser clients running Xash3D WASM to connect to real game servers via WebRTC.
+**webxash-metamod** is a Rust-based Metamod plugin that embeds a WebRTC-to-UDP proxy directly into HLDS (Half-Life Dedicated Server). It allows browser clients running Xash3D WASM to connect to real game servers via WebRTC.
 
 ## Project Structure
 
 ```
-webxash3d-metamod/
+webxash-metamod/
 ├── Cargo.toml                 # cdylib crate, cross-platform config
 ├── .cargo/config.toml         # Cross-compilation targets
 ├── src/
@@ -108,15 +108,15 @@ docker run --rm --platform linux/amd64 \
            apt-get update && apt-get install -y gcc-multilib && \
            cargo build --release --target i686-unknown-linux-gnu"
 
-# Output: target/i686-unknown-linux-gnu/release/libwebxash3d_metamod.so
+# Output: target/i686-unknown-linux-gnu/release/libwebxash_metamod.so
 ```
 
 ## Deployment
 
-1. Copy `libwebxash3d_metamod.so` to HLDS `addons/webxash3d/` directory
+1. Copy `libwebxash_metamod.so` to HLDS `addons/webxash/` directory
 2. Add to `addons/metamod/plugins.ini`:
    ```
-   linux addons/webxash3d/libwebxash3d_metamod.so
+   linux addons/webxash/libwebxash_metamod.so
    ```
 3. Restart HLDS - plugin starts HTTP server on map load
 

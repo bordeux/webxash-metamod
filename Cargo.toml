@@ -1,5 +1,5 @@
 [package]
-name = "webxash3d-metamod"
+name = "webxash-metamod"
 version = "0.1.0"
 edition = "2021"
 description = "WebRTC bridge Metamod plugin for Half-Life/CS 1.6"
@@ -7,7 +7,7 @@ license = "MIT"
 
 [lib]
 crate-type = ["cdylib"]
-name = "webxash3d_metamod"
+name = "webxash_metamod"
 
 [dependencies]
 # Async runtime

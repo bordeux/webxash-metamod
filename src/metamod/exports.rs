@@ -26,7 +26,9 @@ pub static PLUGIN_INFO: PluginInfo = PluginInfo {
     version: PLUGIN_VERSION.as_ptr().cast::<c_char>(),
     date: b"2025\0".as_ptr().cast::<c_char>(),
     author: b"webxash3d\0".as_ptr().cast::<c_char>(),
-    url: b"https://github.com/bordeux/webxash3d-metamod\0".as_ptr().cast::<c_char>(),
+    url: b"https://github.com/nicexash3d/webxash-metamod\0"
+        .as_ptr()
+        .cast::<c_char>(),
     logtag: b"WEBXASH\0".as_ptr().cast::<c_char>(),
     loadable: PluginLoadTime::Startup,
     unloadable: PluginLoadTime::Anypause,
@@ -103,10 +105,7 @@ pub unsafe extern "C" fn Meta_Attach(
 
 /// Detach plugin from Metamod.
 #[no_mangle]
-pub extern "C" fn Meta_Detach(
-    _now: PluginLoadTime,
-    _reason: PluginUnloadReason,
-) -> c_int {
+pub extern "C" fn Meta_Detach(_now: PluginLoadTime, _reason: PluginUnloadReason) -> c_int {
     // Shutdown the WebRTC server
     PLUGIN.lock().shutdown();
 
@@ -197,7 +196,7 @@ pub unsafe extern "C" fn get_entity_api2(
     }
 
     // Copy our function table
-    ptr::copy_nonoverlapping(&raw const G_DLL_FUNCS, func_table, 1);
+    ptr::copy_nonoverlapping(ptr::addr_of!(G_DLL_FUNCS), func_table, 1);
 
     1 // TRUE - success
 }

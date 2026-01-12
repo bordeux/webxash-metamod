@@ -1,5 +1,5 @@
 {
-  "name": "webxash3d-metamod",
+  "name": "webxash-metamod",
   "version": "0.0.0-development",
   "description": "Metamod plugin for WebRTC-to-UDP bridging in HLDS",
   "private": true,
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/nicexash3d/webxash3d-metamod.git"
+    "url": "https://github.com/bordeux/webxash-metamod.git"
   },
   "keywords": [
     "webrtc",

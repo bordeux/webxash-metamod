@@ -192,16 +192,20 @@ pub struct EngineFuncs {
     pub pfn_save_spawn_parms: Option<unsafe extern "C" fn(*mut edict_t)>,
     pub pfn_vec_to_yaw: Option<unsafe extern "C" fn(*const c_float) -> c_float>,
     pub pfn_vec_to_angles: Option<unsafe extern "C" fn(*const c_float, *mut c_float)>,
-    pub pfn_move_to_origin: Option<unsafe extern "C" fn(*mut edict_t, *const c_float, c_float, c_int)>,
+    pub pfn_move_to_origin:
+        Option<unsafe extern "C" fn(*mut edict_t, *const c_float, c_float, c_int)>,
     pub pfn_change_yaw: Option<unsafe extern "C" fn(*mut edict_t)>,
     pub pfn_change_pitch: Option<unsafe extern "C" fn(*mut edict_t)>,
-    pub pfn_find_entity_by_string: Option<unsafe extern "C" fn(*mut edict_t, *const c_char, *const c_char) -> *mut edict_t>,
+    pub pfn_find_entity_by_string:
+        Option<unsafe extern "C" fn(*mut edict_t, *const c_char, *const c_char) -> *mut edict_t>,
     pub pfn_get_entity_illum: Option<unsafe extern "C" fn(*mut edict_t) -> c_int>,
-    pub pfn_find_entity_in_sphere: Option<unsafe extern "C" fn(*mut edict_t, *const c_float, c_float) -> *mut edict_t>,
+    pub pfn_find_entity_in_sphere:
+        Option<unsafe extern "C" fn(*mut edict_t, *const c_float, c_float) -> *mut edict_t>,
     pub pfn_find_client_in_pvs: Option<unsafe extern "C" fn(*mut edict_t) -> *mut edict_t>,
     pub pfn_entities_in_pvs: Option<unsafe extern "C" fn(*mut edict_t) -> *mut edict_t>,
     pub pfn_make_vectors: Option<unsafe extern "C" fn(*const c_float)>,
-    pub pfn_angle_vectors: Option<unsafe extern "C" fn(*const c_float, *mut c_float, *mut c_float, *mut c_float)>,
+    pub pfn_angle_vectors:
+        Option<unsafe extern "C" fn(*const c_float, *mut c_float, *mut c_float, *mut c_float)>,
     pub pfn_create_entity: Option<unsafe extern "C" fn() -> *mut edict_t>,
     pub pfn_remove_entity: Option<unsafe extern "C" fn(*mut edict_t)>,
     pub pfn_create_named_entity: Option<unsafe extern "C" fn(c_int) -> *mut edict_t>,
@@ -210,20 +214,65 @@ pub struct EngineFuncs {
     pub pfn_drop_to_floor: Option<unsafe extern "C" fn(*mut edict_t) -> c_int>,
     pub pfn_walk_move: Option<unsafe extern "C" fn(*mut edict_t, c_float, c_float, c_int) -> c_int>,
     pub pfn_set_origin: Option<unsafe extern "C" fn(*mut edict_t, *const c_float)>,
-    pub pfn_emit_sound: Option<unsafe extern "C" fn(*mut edict_t, c_int, *const c_char, c_float, c_float, c_int, c_int)>,
-    pub pfn_emit_ambient_sound: Option<unsafe extern "C" fn(*mut edict_t, *mut c_float, *const c_char, c_float, c_float, c_int, c_int)>,
-    pub pfn_trace_line: Option<unsafe extern "C" fn(*const c_float, *const c_float, c_int, *mut edict_t, *mut c_void)>,
+    pub pfn_emit_sound: Option<
+        unsafe extern "C" fn(*mut edict_t, c_int, *const c_char, c_float, c_float, c_int, c_int),
+    >,
+    pub pfn_emit_ambient_sound: Option<
+        unsafe extern "C" fn(
+            *mut edict_t,
+            *mut c_float,
+            *const c_char,
+            c_float,
+            c_float,
+            c_int,
+            c_int,
+        ),
+    >,
+    pub pfn_trace_line: Option<
+        unsafe extern "C" fn(*const c_float, *const c_float, c_int, *mut edict_t, *mut c_void),
+    >,
     pub pfn_trace_toss: Option<unsafe extern "C" fn(*mut edict_t, *mut edict_t, *mut c_void)>,
-    pub pfn_trace_monster_hull: Option<unsafe extern "C" fn(*mut edict_t, *const c_float, *const c_float, c_int, *mut edict_t, *mut c_void) -> c_int>,
-    pub pfn_trace_hull: Option<unsafe extern "C" fn(*const c_float, *const c_float, c_int, c_int, *mut edict_t, *mut c_void)>,
-    pub pfn_trace_model: Option<unsafe extern "C" fn(*const c_float, *const c_float, c_int, *mut edict_t, *mut c_void)>,
-    pub pfn_trace_texture: Option<unsafe extern "C" fn(*mut edict_t, *const c_float, *const c_float) -> *const c_char>,
-    pub pfn_trace_sphere: Option<unsafe extern "C" fn(*const c_float, *const c_float, c_int, c_float, *mut edict_t, *mut c_void)>,
+    pub pfn_trace_monster_hull: Option<
+        unsafe extern "C" fn(
+            *mut edict_t,
+            *const c_float,
+            *const c_float,
+            c_int,
+            *mut edict_t,
+            *mut c_void,
+        ) -> c_int,
+    >,
+    pub pfn_trace_hull: Option<
+        unsafe extern "C" fn(
+            *const c_float,
+            *const c_float,
+            c_int,
+            c_int,
+            *mut edict_t,
+            *mut c_void,
+        ),
+    >,
+    pub pfn_trace_model: Option<
+        unsafe extern "C" fn(*const c_float, *const c_float, c_int, *mut edict_t, *mut c_void),
+    >,
+    pub pfn_trace_texture:
+        Option<unsafe extern "C" fn(*mut edict_t, *const c_float, *const c_float) -> *const c_char>,
+    pub pfn_trace_sphere: Option<
+        unsafe extern "C" fn(
+            *const c_float,
+            *const c_float,
+            c_int,
+            c_float,
+            *mut edict_t,
+            *mut c_void,
+        ),
+    >,
     pub pfn_get_aim_vector: Option<unsafe extern "C" fn(*mut edict_t, c_float, *mut c_float)>,
     pub pfn_server_command: Option<unsafe extern "C" fn(*const c_char)>,
     pub pfn_server_execute: Option<unsafe extern "C" fn()>,
     pub pfn_client_command: Option<unsafe extern "C" fn(*mut edict_t, *const c_char, ...)>,
-    pub pfn_particle_effect: Option<unsafe extern "C" fn(*const c_float, *const c_float, c_float, c_float)>,
+    pub pfn_particle_effect:
+        Option<unsafe extern "C" fn(*const c_float, *const c_float, c_float, c_float)>,
     pub pfn_light_style: Option<unsafe extern "C" fn(c_int, *const c_char)>,
     pub pfn_decal_index: Option<unsafe extern "C" fn(*const c_char) -> c_int>,
     pub pfn_point_contents: Option<unsafe extern "C" fn(*const c_float) -> c_int>,
@@ -244,7 +293,8 @@ pub struct EngineFuncs {
     pub pfn_cvar_set_string: Option<unsafe extern "C" fn(*const c_char, *const c_char)>,
     pub pfn_alert_message: PfnAlertMessage,
     pub pfn_engine_fprintf: Option<unsafe extern "C" fn(*mut c_void, *const c_char, ...)>,
-    pub pfn_alloc_ent_private_data: Option<unsafe extern "C" fn(*mut edict_t, c_int) -> *mut c_void>,
+    pub pfn_alloc_ent_private_data:
+        Option<unsafe extern "C" fn(*mut edict_t, c_int) -> *mut c_void>,
     pub pfn_ent_private_data: Option<unsafe extern "C" fn(*mut edict_t) -> *mut c_void>,
     pub pfn_free_ent_private_data: Option<unsafe extern "C" fn(*mut edict_t)>,
     pub pfn_sz_from_index: Option<unsafe extern "C" fn(c_int) -> *const c_char>,
@@ -262,7 +312,8 @@ pub struct EngineFuncs {
     pub pfn_get_model_ptr: Option<unsafe extern "C" fn(*mut edict_t) -> *mut c_void>,
     pub pfn_reg_user_msg: Option<unsafe extern "C" fn(*const c_char, c_int) -> c_int>,
     pub pfn_animation_auto_move: Option<unsafe extern "C" fn(*const edict_t, c_float)>,
-    pub pfn_get_bone_position: Option<unsafe extern "C" fn(*const edict_t, c_int, *mut c_float, *mut c_float)>,
+    pub pfn_get_bone_position:
+        Option<unsafe extern "C" fn(*const edict_t, c_int, *mut c_float, *mut c_float)>,
     pub pfn_function_from_name: Option<unsafe extern "C" fn(*const c_char) -> c_uchar>,
     pub pfn_name_for_function: Option<unsafe extern "C" fn(c_uchar) -> *const c_char>,
     pub pfn_client_printf: Option<unsafe extern "C" fn(*mut edict_t, c_int, *const c_char)>,
@@ -270,7 +321,8 @@ pub struct EngineFuncs {
     pub pfn_cmd_args: Option<unsafe extern "C" fn() -> *const c_char>,
     pub pfn_cmd_argv: Option<unsafe extern "C" fn(c_int) -> *const c_char>,
     pub pfn_cmd_argc: Option<unsafe extern "C" fn() -> c_int>,
-    pub pfn_get_attachment: Option<unsafe extern "C" fn(*const edict_t, c_int, *mut c_float, *mut c_float)>,
+    pub pfn_get_attachment:
+        Option<unsafe extern "C" fn(*const edict_t, c_int, *mut c_float, *mut c_float)>,
     pub pfn_crc32_init: Option<unsafe extern "C" fn(*mut c_uchar)>,
     pub pfn_crc32_process_buffer: Option<unsafe extern "C" fn(*mut c_uchar, *mut c_void, c_int)>,
     pub pfn_crc32_process_byte: Option<unsafe extern "C" fn(*mut c_uchar, c_uchar)>,
@@ -280,41 +332,92 @@ pub struct EngineFuncs {
     pub pfn_set_view: Option<unsafe extern "C" fn(*const edict_t, *const edict_t)>,
     pub pfn_time: Option<unsafe extern "C" fn() -> c_float>,
     pub pfn_crosshair_angle: Option<unsafe extern "C" fn(*const edict_t, c_float, c_float)>,
-    pub pfn_load_file_for_me: Option<unsafe extern "C" fn(*const c_char, *mut c_int) -> *mut c_uchar>,
+    pub pfn_load_file_for_me:
+        Option<unsafe extern "C" fn(*const c_char, *mut c_int) -> *mut c_uchar>,
     pub pfn_free_file: Option<unsafe extern "C" fn(*mut c_void)>,
     pub pfn_end_section: Option<unsafe extern "C" fn(*const c_char)>,
-    pub pfn_compare_file_time: Option<unsafe extern "C" fn(*const c_char, *const c_char, *mut c_int) -> c_int>,
+    pub pfn_compare_file_time:
+        Option<unsafe extern "C" fn(*const c_char, *const c_char, *mut c_int) -> c_int>,
     pub pfn_get_game_dir: Option<unsafe extern "C" fn(*mut c_char)>,
     pub pfn_cvar_register_variable: Option<unsafe extern "C" fn(*mut cvar_t)>,
-    pub pfn_fade_client_volume: Option<unsafe extern "C" fn(*const edict_t, c_int, c_int, c_int, c_int)>,
+    pub pfn_fade_client_volume:
+        Option<unsafe extern "C" fn(*const edict_t, c_int, c_int, c_int, c_int)>,
     pub pfn_set_client_max_speed: Option<unsafe extern "C" fn(*mut edict_t, c_float)>,
     pub pfn_create_fake_client: Option<unsafe extern "C" fn(*const c_char) -> *mut edict_t>,
-    pub pfn_run_player_move: Option<unsafe extern "C" fn(*mut edict_t, *const c_float, c_float, c_float, c_float, c_ushort, c_uchar, c_uchar)>,
+    pub pfn_run_player_move: Option<
+        unsafe extern "C" fn(
+            *mut edict_t,
+            *const c_float,
+            c_float,
+            c_float,
+            c_float,
+            c_ushort,
+            c_uchar,
+            c_uchar,
+        ),
+    >,
     pub pfn_number_of_entities: Option<unsafe extern "C" fn() -> c_int>,
     pub pfn_get_info_key_buffer: Option<unsafe extern "C" fn(*mut edict_t) -> *mut c_char>,
     pub pfn_info_key_value: Option<unsafe extern "C" fn(*mut c_char, *const c_char) -> *mut c_char>,
     pub pfn_set_key_value: Option<unsafe extern "C" fn(*mut c_char, *const c_char, *const c_char)>,
-    pub pfn_set_client_key_value: Option<unsafe extern "C" fn(c_int, *mut c_char, *const c_char, *const c_char)>,
+    pub pfn_set_client_key_value:
+        Option<unsafe extern "C" fn(c_int, *mut c_char, *const c_char, *const c_char)>,
     pub pfn_is_map_valid: Option<unsafe extern "C" fn(*const c_char) -> c_int>,
     pub pfn_static_decal: Option<unsafe extern "C" fn(*const c_float, c_int, c_int, c_int)>,
     pub pfn_precache_generic: Option<unsafe extern "C" fn(*const c_char) -> c_int>,
     pub pfn_get_player_userid: Option<unsafe extern "C" fn(*mut edict_t) -> c_int>,
-    pub pfn_build_sound_msg: Option<unsafe extern "C" fn(*mut edict_t, c_int, *const c_char, c_float, c_float, c_int, c_int, c_int, c_int, *const c_float, *mut edict_t)>,
+    pub pfn_build_sound_msg: Option<
+        unsafe extern "C" fn(
+            *mut edict_t,
+            c_int,
+            *const c_char,
+            c_float,
+            c_float,
+            c_int,
+            c_int,
+            c_int,
+            c_int,
+            *const c_float,
+            *mut edict_t,
+        ),
+    >,
     pub pfn_is_dedicated_server: Option<unsafe extern "C" fn() -> c_int>,
     pub pfn_cvar_get_pointer: PfnCvarGetPointer,
     pub pfn_get_player_wonid: Option<unsafe extern "C" fn(*mut edict_t) -> c_uint>,
     pub pfn_info_remove_key: Option<unsafe extern "C" fn(*mut c_char, *const c_char)>,
-    pub pfn_get_physics_key_value: Option<unsafe extern "C" fn(*const edict_t, *const c_char) -> *const c_char>,
-    pub pfn_set_physics_key_value: Option<unsafe extern "C" fn(*const edict_t, *const c_char, *const c_char)>,
+    pub pfn_get_physics_key_value:
+        Option<unsafe extern "C" fn(*const edict_t, *const c_char) -> *const c_char>,
+    pub pfn_set_physics_key_value:
+        Option<unsafe extern "C" fn(*const edict_t, *const c_char, *const c_char)>,
     pub pfn_get_physics_info_string: Option<unsafe extern "C" fn(*const edict_t) -> *const c_char>,
     pub pfn_precache_event: Option<unsafe extern "C" fn(c_int, *const c_char) -> c_ushort>,
-    pub pfn_playback_event: Option<unsafe extern "C" fn(c_int, *const edict_t, c_ushort, c_float, *const c_float, *const c_float, c_float, c_float, c_int, c_int, c_int, c_int)>,
+    pub pfn_playback_event: Option<
+        unsafe extern "C" fn(
+            c_int,
+            *const edict_t,
+            c_ushort,
+            c_float,
+            *const c_float,
+            *const c_float,
+            c_float,
+            c_float,
+            c_int,
+            c_int,
+            c_int,
+            c_int,
+        ),
+    >,
     pub pfn_set_fat_pvs: Option<unsafe extern "C" fn(*mut c_float) -> *mut c_uchar>,
     pub pfn_set_fat_pas: Option<unsafe extern "C" fn(*mut c_float) -> *mut c_uchar>,
     pub pfn_check_visibility: Option<unsafe extern "C" fn(*const edict_t, *mut c_uchar) -> c_int>,
     pub pfn_delta_set_field: Option<unsafe extern "C" fn(*mut c_void, *const c_char)>,
     pub pfn_delta_unset_field: Option<unsafe extern "C" fn(*mut c_void, *const c_char)>,
-    pub pfn_delta_add_encoder: Option<unsafe extern "C" fn(*const c_char, Option<unsafe extern "C" fn(*mut c_void, *const c_uchar, *const c_uchar)>)>,
+    pub pfn_delta_add_encoder: Option<
+        unsafe extern "C" fn(
+            *const c_char,
+            Option<unsafe extern "C" fn(*mut c_void, *const c_uchar, *const c_uchar)>,
+        ),
+    >,
     pub pfn_get_current_player: Option<unsafe extern "C" fn() -> c_int>,
     pub pfn_can_skip_player: Option<unsafe extern "C" fn(*const edict_t) -> c_int>,
     pub pfn_delta_find_field: Option<unsafe extern "C" fn(*mut c_void, *const c_char) -> c_int>,
@@ -327,7 +430,8 @@ pub struct EngineFuncs {
     pub pfn_voice_set_client_listening: Option<unsafe extern "C" fn(c_int, c_int, c_int) -> c_int>,
     pub pfn_get_player_auth_id: Option<unsafe extern "C" fn(*mut edict_t) -> *const c_char>,
     pub pfn_sequence_get: Option<unsafe extern "C" fn(*const c_char, *const c_char) -> *mut c_void>,
-    pub pfn_sequence_pickup_sentence: Option<unsafe extern "C" fn(*const c_char, c_int, *mut c_int) -> *mut c_void>,
+    pub pfn_sequence_pickup_sentence:
+        Option<unsafe extern "C" fn(*const c_char, c_int, *mut c_int) -> *mut c_void>,
     pub pfn_get_file_size: Option<unsafe extern "C" fn(*const c_char) -> c_int>,
     pub pfn_get_approx_wave_play_len: Option<unsafe extern "C" fn(*const c_char) -> c_uint>,
     pub pfn_is_career_match: Option<unsafe extern "C" fn() -> c_int>,
@@ -338,7 +442,8 @@ pub struct EngineFuncs {
     pub pfn_construct_tutor_message_decay_buffer: Option<unsafe extern "C" fn(*mut c_int, c_int)>,
     pub pfn_reset_tutor_message_decay_data: Option<unsafe extern "C" fn()>,
     pub pfn_query_client_cvar_value: Option<unsafe extern "C" fn(*const edict_t, *const c_char)>,
-    pub pfn_query_client_cvar_value2: Option<unsafe extern "C" fn(*const edict_t, *const c_char, c_int)>,
+    pub pfn_query_client_cvar_value2:
+        Option<unsafe extern "C" fn(*const edict_t, *const c_char, c_int)>,
     pub pfn_check_parm: Option<unsafe extern "C" fn(*const c_char, *mut *mut c_char) -> c_int>,
 }
 
@@ -362,12 +467,16 @@ pub struct DllFunctions {
     pub pfn_save: Option<unsafe extern "C" fn(*mut edict_t, *mut c_void)>,
     pub pfn_restore: Option<unsafe extern "C" fn(*mut edict_t, *mut c_void, c_int) -> c_int>,
     pub pfn_set_abs_box: Option<unsafe extern "C" fn(*mut edict_t)>,
-    pub pfn_save_write_fields: Option<unsafe extern "C" fn(*mut c_void, *const c_char, *mut c_void, *mut c_void, c_int)>,
-    pub pfn_save_read_fields: Option<unsafe extern "C" fn(*mut c_void, *const c_char, *mut c_void, *mut c_void, c_int)>,
+    pub pfn_save_write_fields:
+        Option<unsafe extern "C" fn(*mut c_void, *const c_char, *mut c_void, *mut c_void, c_int)>,
+    pub pfn_save_read_fields:
+        Option<unsafe extern "C" fn(*mut c_void, *const c_char, *mut c_void, *mut c_void, c_int)>,
     pub pfn_save_global_state: Option<unsafe extern "C" fn(*mut c_void)>,
     pub pfn_restore_global_state: Option<unsafe extern "C" fn(*mut c_void)>,
     pub pfn_reset_global_state: Option<unsafe extern "C" fn()>,
-    pub pfn_client_connect: Option<unsafe extern "C" fn(*mut edict_t, *const c_char, *const c_char, *mut c_char) -> c_int>,
+    pub pfn_client_connect: Option<
+        unsafe extern "C" fn(*mut edict_t, *const c_char, *const c_char, *mut c_char) -> c_int,
+    >,
     pub pfn_client_disconnect: Option<unsafe extern "C" fn(*mut edict_t)>,
     pub pfn_client_kill: Option<unsafe extern "C" fn(*mut edict_t)>,
     pub pfn_client_put_in_server: Option<unsafe extern "C" fn(*mut edict_t)>,
@@ -389,18 +498,44 @@ pub struct DllFunctions {
     pub pfn_pm_move: Option<unsafe extern "C" fn(*mut c_void, c_int)>,
     pub pfn_pm_init: Option<unsafe extern "C" fn(*mut c_void)>,
     pub pfn_pm_find_texture_type: Option<unsafe extern "C" fn(*mut c_char) -> c_char>,
-    pub pfn_setup_visibility: Option<unsafe extern "C" fn(*mut edict_t, *mut edict_t, *mut *mut c_uchar, *mut *mut c_uchar)>,
+    pub pfn_setup_visibility: Option<
+        unsafe extern "C" fn(*mut edict_t, *mut edict_t, *mut *mut c_uchar, *mut *mut c_uchar),
+    >,
     pub pfn_update_client_data: Option<unsafe extern "C" fn(*const edict_t, c_int, *mut c_void)>,
-    pub pfn_add_to_full_pack: Option<unsafe extern "C" fn(*mut c_void, c_int, *mut edict_t, *mut edict_t, c_int, c_int, *mut c_uchar) -> c_int>,
-    pub pfn_create_baseline: Option<unsafe extern "C" fn(c_int, c_int, *mut c_void, *mut edict_t, c_int, *const c_float, *const c_float)>,
+    pub pfn_add_to_full_pack: Option<
+        unsafe extern "C" fn(
+            *mut c_void,
+            c_int,
+            *mut edict_t,
+            *mut edict_t,
+            c_int,
+            c_int,
+            *mut c_uchar,
+        ) -> c_int,
+    >,
+    pub pfn_create_baseline: Option<
+        unsafe extern "C" fn(
+            c_int,
+            c_int,
+            *mut c_void,
+            *mut edict_t,
+            c_int,
+            *const c_float,
+            *const c_float,
+        ),
+    >,
     pub pfn_register_encoders: Option<unsafe extern "C" fn()>,
     pub pfn_get_weapon_data: Option<unsafe extern "C" fn(*mut edict_t, *mut c_void) -> c_int>,
     pub pfn_cmd_start: Option<unsafe extern "C" fn(*const edict_t, *const c_void, c_uint)>,
     pub pfn_cmd_end: Option<unsafe extern "C" fn(*const edict_t)>,
-    pub pfn_connection_less_packet: Option<unsafe extern "C" fn(*const c_void, *const c_char, *mut c_char, *mut c_int) -> c_int>,
-    pub pfn_get_hull_bounds: Option<unsafe extern "C" fn(c_int, *mut c_float, *mut c_float) -> c_int>,
+    pub pfn_connection_less_packet: Option<
+        unsafe extern "C" fn(*const c_void, *const c_char, *mut c_char, *mut c_int) -> c_int,
+    >,
+    pub pfn_get_hull_bounds:
+        Option<unsafe extern "C" fn(c_int, *mut c_float, *mut c_float) -> c_int>,
     pub pfn_create_instanced_baselines: Option<unsafe extern "C" fn()>,
-    pub pfn_inconsistent_file: Option<unsafe extern "C" fn(*const edict_t, *const c_char, *mut c_char) -> c_int>,
+    pub pfn_inconsistent_file:
+        Option<unsafe extern "C" fn(*const edict_t, *const c_char, *mut c_char) -> c_int>,
     pub pfn_allow_lag_compensation: Option<unsafe extern "C" fn() -> c_int>,
 }
 
@@ -411,7 +546,8 @@ pub struct NewDllFunctions {
     pub pfn_game_shutdown: Option<unsafe extern "C" fn()>,
     pub pfn_should_collide: Option<unsafe extern "C" fn(*mut edict_t, *mut edict_t) -> c_int>,
     pub pfn_cvar_value: Option<unsafe extern "C" fn(*const edict_t, *const c_char)>,
-    pub pfn_cvar_value2: Option<unsafe extern "C" fn(*const edict_t, c_int, *const c_char, *const c_char)>,
+    pub pfn_cvar_value2:
+        Option<unsafe extern "C" fn(*const edict_t, c_int, *const c_char, *const c_char)>,
 }
 
 // =============================================================================
@@ -458,19 +594,53 @@ pub struct MetaUtilFuncs {
     pub pfn_log_error: Option<unsafe extern "C" fn(*const PluginInfo, *const c_char, ...)>,
     pub pfn_log_developer: Option<unsafe extern "C" fn(*const PluginInfo, *const c_char, ...)>,
     pub pfn_center_say: Option<unsafe extern "C" fn(*const PluginInfo, *const c_char, ...)>,
-    pub pfn_center_say_parms: Option<unsafe extern "C" fn(*const PluginInfo, *mut c_void, *const c_char, ...)>,
-    pub pfn_center_say_varargs: Option<unsafe extern "C" fn(*const PluginInfo, *mut c_void, *const c_char, *mut c_void)>,
-    pub pfn_call_game_entity: Option<unsafe extern "C" fn(*const PluginInfo, *const c_char, *mut entvars_t) -> c_int>,
-    pub pfn_get_user_msg_id: Option<unsafe extern "C" fn(*const PluginInfo, *const c_char, *mut c_int) -> c_int>,
-    pub pfn_get_user_msg_name: Option<unsafe extern "C" fn(*const PluginInfo, c_int, *mut c_int) -> *const c_char>,
+    pub pfn_center_say_parms:
+        Option<unsafe extern "C" fn(*const PluginInfo, *mut c_void, *const c_char, ...)>,
+    pub pfn_center_say_varargs:
+        Option<unsafe extern "C" fn(*const PluginInfo, *mut c_void, *const c_char, *mut c_void)>,
+    pub pfn_call_game_entity:
+        Option<unsafe extern "C" fn(*const PluginInfo, *const c_char, *mut entvars_t) -> c_int>,
+    pub pfn_get_user_msg_id:
+        Option<unsafe extern "C" fn(*const PluginInfo, *const c_char, *mut c_int) -> c_int>,
+    pub pfn_get_user_msg_name:
+        Option<unsafe extern "C" fn(*const PluginInfo, c_int, *mut c_int) -> *const c_char>,
     pub pfn_get_plugin_path: Option<unsafe extern "C" fn(*const PluginInfo) -> *const c_char>,
     pub pfn_get_game_info: Option<unsafe extern "C" fn(*const PluginInfo, c_int) -> *const c_char>,
-    pub pfn_load_plugin: Option<unsafe extern "C" fn(*const PluginInfo, *const c_char, PluginLoadTime, *mut *mut c_void) -> c_int>,
-    pub pfn_unload_plugin: Option<unsafe extern "C" fn(*const PluginInfo, *const c_char, PluginLoadTime, PluginUnloadReason) -> c_int>,
-    pub pfn_unload_plugin_by_handle: Option<unsafe extern "C" fn(*const PluginInfo, *mut c_void, PluginLoadTime, PluginUnloadReason) -> c_int>,
-    pub pfn_is_querying_client_cvar: Option<unsafe extern "C" fn(*const PluginInfo, *const edict_t) -> *const c_char>,
+    pub pfn_load_plugin: Option<
+        unsafe extern "C" fn(
+            *const PluginInfo,
+            *const c_char,
+            PluginLoadTime,
+            *mut *mut c_void,
+        ) -> c_int,
+    >,
+    pub pfn_unload_plugin: Option<
+        unsafe extern "C" fn(
+            *const PluginInfo,
+            *const c_char,
+            PluginLoadTime,
+            PluginUnloadReason,
+        ) -> c_int,
+    >,
+    pub pfn_unload_plugin_by_handle: Option<
+        unsafe extern "C" fn(
+            *const PluginInfo,
+            *mut c_void,
+            PluginLoadTime,
+            PluginUnloadReason,
+        ) -> c_int,
+    >,
+    pub pfn_is_querying_client_cvar:
+        Option<unsafe extern "C" fn(*const PluginInfo, *const edict_t) -> *const c_char>,
     pub pfn_make_request_id: Option<unsafe extern "C" fn(*const PluginInfo) -> c_int>,
-    pub pfn_get_hook_tables: Option<unsafe extern "C" fn(*const PluginInfo, *mut *mut EngineFuncs, *mut *mut DllFunctions, *mut *mut NewDllFunctions)>,
+    pub pfn_get_hook_tables: Option<
+        unsafe extern "C" fn(
+            *const PluginInfo,
+            *mut *mut EngineFuncs,
+            *mut *mut DllFunctions,
+            *mut *mut NewDllFunctions,
+        ),
+    >,
 }
 
 // =============================================================================

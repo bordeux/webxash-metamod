@@ -1,4 +1,4 @@
-# webxash3d-metamod
+# webxash-metamod
 
 A Rust-based Metamod plugin that provides WebRTC-to-UDP bridging for browser-based Half-Life/CS 1.6 clients. This plugin embeds a WebRTC signaling server directly into the HLDS game server, allowing browser clients to connect via WebRTC data channels.
 
@@ -16,7 +16,7 @@ A Rust-based Metamod plugin that provides WebRTC-to-UDP bridging for browser-bas
 │  HLDS Process                                                            │
 │                                                                          │
 │  ┌────────────────────┐     ┌────────────────────────────────────────┐  │
-│  │  Game Engine       │     │  Metamod Plugin (webxash3d-metamod)    │  │
+│  │  Game Engine       │     │  Metamod Plugin (webxash-metamod)    │  │
 │  │                    │     │                                        │  │
 │  │  UDP :27015        │◄───►│  ┌──────────────────────────────────┐  │  │
 │  │  (Game traffic)    │     │  │  Bridge (per WebRTC client)      │  │  │
@@ -73,18 +73,18 @@ cargo build --release --target i686-pc-windows-gnu
 
 | Target | Output Path |
 |--------|-------------|
-| macOS (dev) | `target/release/libwebxash3d_metamod.dylib` |
-| Linux 32-bit | `target/i686-unknown-linux-gnu/release/libwebxash3d_metamod.so` |
-| Windows 32-bit | `target/i686-pc-windows-gnu/release/webxash3d_metamod.dll` |
+| macOS (dev) | `target/release/libwebxash_metamod.dylib` |
+| Linux 32-bit | `target/i686-unknown-linux-gnu/release/libwebxash_metamod.so` |
+| Windows 32-bit | `target/i686-pc-windows-gnu/release/webxash_metamod.dll` |
 
 ## Installation
 
 1. Build the plugin for your target platform
-2. Copy the output library to your HLDS `addons/webxash3d/` directory
+2. Copy the output library to your HLDS `addons/webxash/` directory
 3. Add to `addons/metamod/plugins.ini`:
    ```
-   linux addons/webxash3d/libwebxash3d_metamod.so
-   win32 addons/webxash3d/webxash3d_metamod.dll
+   linux addons/webxash/libwebxash_metamod.so
+   win32 addons/webxash/webxash_metamod.dll
    ```
 4. Restart HLDS - plugin starts HTTP server on first map load
 
