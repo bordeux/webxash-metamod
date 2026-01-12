@@ -1,0 +1,35 @@
+{
+  "name": "webxash3d-metamod",
+  "version": "0.0.0-development",
+  "description": "Metamod plugin for WebRTC-to-UDP bridging in HLDS",
+  "private": true,
+  "scripts": {
+    "prepare": "husky install || true",
+    "test:commit": "commitlint --from=HEAD~1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nicexash3d/webxash3d-metamod.git"
+  },
+  "keywords": [
+    "webrtc",
+    "metamod",
+    "hlds",
+    "half-life",
+    "cs16",
+    "rust"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
+    "husky": "^8.0.3"
+  },
+  "dependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/exec": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "conventional-changelog-conventionalcommits": "^7.0.2",
+    "semantic-release": "^25.0.2"
+  }
+}
