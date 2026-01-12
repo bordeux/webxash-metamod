@@ -250,9 +250,13 @@ pub struct EngineFuncs {
     pub pfn_sz_from_index: Option<unsafe extern "C" fn(c_int) -> *const c_char>,
     pub pfn_alloc_string: Option<unsafe extern "C" fn(*const c_char) -> c_int>,
     pub pfn_get_vars_of_ent: Option<unsafe extern "C" fn(*mut edict_t) -> *mut entvars_t>,
-    pub pfn_pent_offset_of_pent: Option<unsafe extern "C" fn(*const edict_t) -> c_int>,
-    pub pfn_index_of_edict: Option<unsafe extern "C" fn(*const edict_t) -> c_int>,
+    // SDK #70: pfnPEntityOfEntOffset - offset to edict
     pub pfn_pent_of_ent_offset: Option<unsafe extern "C" fn(c_int) -> *mut edict_t>,
+    // SDK #71: pfnEntOffsetOfPEntity - edict to offset
+    pub pfn_ent_offset_of_pent: Option<unsafe extern "C" fn(*const edict_t) -> c_int>,
+    // SDK #72: pfnIndexOfEdict
+    pub pfn_index_of_edict: Option<unsafe extern "C" fn(*const edict_t) -> c_int>,
+    // SDK #73: pfnPEntityOfEntIndex
     pub pfn_pent_of_ent_index: Option<unsafe extern "C" fn(c_int) -> *mut edict_t>,
     pub pfn_find_entity_by_vars: Option<unsafe extern "C" fn(*mut entvars_t) -> *mut edict_t>,
     pub pfn_get_model_ptr: Option<unsafe extern "C" fn(*mut edict_t) -> *mut c_void>,

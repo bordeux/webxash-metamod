@@ -4,18 +4,11 @@
 
 use once_cell::sync::Lazy;
 use parking_lot::Mutex;
-use std::ffi::{c_char, CStr};
 use std::ptr;
 
 use crate::config::PluginConfig;
 use crate::metamod::types::*;
 use crate::runtime::PluginRuntime;
-
-/// CVar name for HTTP/WebSocket port (0 = use hostport)
-const CVAR_PORT: &[u8] = b"webxash_port\0";
-
-/// CVar name for public IP (optional)
-const CVAR_PUBLIC_IP: &[u8] = b"webxash_public_ip\0";
 
 /// HLDS hostport cvar
 const CVAR_HOSTPORT: &[u8] = b"hostport\0";
@@ -171,15 +164,38 @@ impl Plugin {
 
     /// Register plugin cvars.
     fn register_cvars(&mut self) {
-        // TODO: cvar registration causes issues - need to verify EngineFuncs struct offsets
-        // Disabled for now
+        // CVars are optional - hostport is built-in to HLDS
     }
 
     /// Load configuration from cvars.
     fn load_config(&self) -> PluginConfig {
-        // TODO: cvar reading causes segfault - need to verify EngineFuncs struct offsets
-        // For now, just use defaults. Set webxash_port in server.cfg if needed.
-        PluginConfig::default()
+        let mut config = PluginConfig::default();
+
+        if self.engine_funcs.is_null() {
+            return config;
+        }
+
+        // SAFETY: engine_funcs checked above
+        unsafe {
+            let funcs = &*self.engine_funcs;
+            let cvar_name = CVAR_HOSTPORT.as_ptr().cast();
+
+            // Use pfn_cvar_get_pointer to read hostport cvar
+            if let Some(cvar_get_pointer) = funcs.pfn_cvar_get_pointer {
+                let cvar_ptr = cvar_get_pointer(cvar_name);
+
+                if !cvar_ptr.is_null() {
+                    let cvar = &*cvar_ptr;
+
+                    if cvar.value > 0.0 && cvar.value < 65536.0 {
+                        config.http_port = cvar.value as u16;
+                        config.game_port = cvar.value as u16;
+                    }
+                }
+            }
+        }
+
+        config
     }
 
     /// Log an info message.

@@ -80,24 +80,19 @@ cargo build --release --target i686-pc-windows-gnu
 ## Installation
 
 1. Build the plugin for your target platform
-2. Copy the output library to your HLDS `addons/metamod/dlls/` directory
+2. Copy the output library to your HLDS `addons/webxash3d/` directory
 3. Add to `addons/metamod/plugins.ini`:
    ```
-   linux addons/metamod/dlls/libwebxash3d_metamod.so
-   win32 addons/metamod/dlls/webxash3d_metamod.dll
+   linux addons/webxash3d/libwebxash3d_metamod.so
+   win32 addons/webxash3d/webxash3d_metamod.dll
    ```
-4. Restart HLDS
+4. Restart HLDS - plugin starts HTTP server on first map load
 
 ## Configuration
 
-The plugin uses the following cvars:
+The plugin automatically reads the HLDS `hostport` cvar to determine which port to use for the HTTP/WebSocket server. Since HLDS uses UDP and the plugin uses TCP, they can share the same port number.
 
-| CVar | Default | Description |
-|------|---------|-------------|
-| `webxash_port` | `0` | HTTP/WebSocket port. 0 = auto-detect from HLDS `hostport` |
-| `webxash_public_ip` | (empty) | Public IP for NAT traversal (optional) |
-
-By default (`webxash_port 0`), the plugin reads HLDS's `hostport` cvar to determine which port to use. Since HLDS uses UDP and the plugin uses TCP, they can share the same port number.
+No additional configuration is required - the plugin auto-detects the server port on map load.
 
 ## API Endpoints
 
