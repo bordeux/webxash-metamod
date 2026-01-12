@@ -363,6 +363,14 @@ fn scan_directory_recursive(dir: &Path, base_path: &Path, lines: &mut Vec<String
             // Recurse into subdirectories
             scan_directory_recursive(&path, base_path, lines);
         } else if path.is_file() {
+            // Skip temporary files
+            if let Some(ext) = path.extension() {
+                let ext_lower = ext.to_string_lossy().to_lowercase();
+                if ext_lower == "tmp" || ext_lower == "ztmp" {
+                    continue;
+                }
+            }
+
             // Get file metadata for size
             if let Ok(metadata) = std::fs::metadata(&path) {
                 // Get relative path from cstrike folder
