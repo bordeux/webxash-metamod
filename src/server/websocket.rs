@@ -5,7 +5,10 @@ use std::sync::Arc;
 use futures::{SinkExt, StreamExt};
 use serde::{Deserialize, Serialize};
 use tokio::net::TcpStream;
-use tokio_tungstenite::{accept_async, tungstenite::Message, WebSocketStream};
+use tokio_tungstenite::{
+    tungstenite::{protocol::Role, Message},
+    WebSocketStream,
+};
 
 use crate::bridge::Bridge;
 use crate::config::PluginConfig;
@@ -27,20 +30,13 @@ struct SignalMessage {
 
 /// Handle a WebSocket connection for signaling.
 ///
-/// Note: The TCP stream should have already had its HTTP headers consumed
-/// by the HTTP server. We use tokio-tungstenite's server accept to complete
-/// the WebSocket handshake.
+/// Note: The TCP stream has already completed the WebSocket handshake in http.rs.
+/// We wrap it directly as a WebSocketStream since the HTTP 101 response was already sent.
 pub async fn handle_websocket(stream: TcpStream, config: Arc<PluginConfig>, client_id: String) {
     println!("[WEBXASH] New WebSocket connection: {client_id}");
 
-    // Accept the WebSocket connection (completes the handshake)
-    let ws_stream = match accept_async(stream).await {
-        Ok(ws) => ws,
-        Err(e) => {
-            eprintln!("[WEBXASH] WebSocket accept error for {client_id}: {e}");
-            return;
-        }
-    };
+    // Wrap the stream as WebSocket (handshake already completed in http.rs)
+    let ws_stream = WebSocketStream::from_raw_socket(stream, Role::Server, None).await;
 
     // Handle the signaling
     if let Err(e) = handle_signaling(ws_stream, config, client_id.clone()).await {
