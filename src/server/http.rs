@@ -6,6 +6,7 @@ use std::net::SocketAddr;
 use std::path::Path;
 use std::sync::Arc;
 
+use sha1::{Digest, Sha1};
 use tokio::fs::File;
 use tokio::io::{AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader};
 use tokio::net::{TcpListener, TcpStream};
@@ -119,7 +120,18 @@ async fn handle_connection(
     let stream = buf_reader.into_inner();
 
     if is_websocket && upgrade_header && !ws_key.is_empty() {
-        // Handle WebSocket connection
+        // Complete WebSocket handshake manually
+        let mut stream = stream;
+        let accept_key = compute_websocket_accept_key(&ws_key);
+        let response = format!(
+            "HTTP/1.1 101 Switching Protocols\r\n\
+             Upgrade: websocket\r\n\
+             Connection: Upgrade\r\n\
+             Sec-WebSocket-Accept: {accept_key}\r\n\r\n"
+        );
+        stream.write_all(response.as_bytes()).await?;
+
+        // Handle WebSocket connection (handshake already completed)
         let client_id = format!("{}-{}", peer_addr, uuid_simple());
         handle_websocket(stream, config, client_id).await;
     } else {
@@ -407,4 +419,18 @@ fn escape_json_string(s: &str) -> String {
         }
     }
     result
+}
+
+/// WebSocket GUID for handshake (RFC 6455)
+const WEBSOCKET_GUID: &str = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
+
+/// Compute WebSocket Sec-WebSocket-Accept key from client's Sec-WebSocket-Key.
+fn compute_websocket_accept_key(client_key: &str) -> String {
+    use base64::Engine;
+
+    let mut hasher = Sha1::new();
+    hasher.update(client_key.as_bytes());
+    hasher.update(WEBSOCKET_GUID.as_bytes());
+    let hash = hasher.finalize();
+    base64::engine::general_purpose::STANDARD.encode(hash)
 }
