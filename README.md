@@ -102,6 +102,22 @@ Health check endpoint. Returns `OK` if the server is running.
 ### WebSocket /ws or /websocket
 WebRTC signaling endpoint. Accepts WebSocket connections for SDP offer/answer and ICE candidate exchange.
 
+### GET /cstrike/*
+Static file server for game assets. Serves files from the HLDS `cstrike/` directory with path traversal protection.
+
+**Allowed folders:** `sound`, `sprites`, `gfx`, `maps`, `models`, `overviews`
+
+**Example:** `/cstrike/sound/weapons/ak47-1.wav`
+
+### GET /resources.jsonl
+Returns a list of all available game assets in [JSON Lines](https://jsonlines.org/) format. Generated once on server startup for optimal performance.
+
+**Response format:** Each line is a JSON object with `path` and `size`:
+```json
+{"path":"sound/weapons/ak47-1.wav","size":12345}
+{"path":"maps/de_dust2.bsp","size":2345678}
+```
+
 ## WebSocket Signaling Protocol
 
 Messages are JSON objects with `event` and `data` fields:
