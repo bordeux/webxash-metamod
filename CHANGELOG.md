@@ -1,3 +1,9 @@
+## <small>1.1.1 (2026-01-14)</small>
+
+* Merge pull request #2 from bordeux/feature/file-listing ([d7802d5](https://github.com/bordeux/webxash-metamod/commit/d7802d5)), closes [#2](https://github.com/bordeux/webxash-metamod/issues/2)
+* Merge remote-tracking branch 'origin/master' into feature/file-listing ([701f31a](https://github.com/bordeux/webxash-metamod/commit/701f31a))
+* fix: complete WebSocket handshake manually before passing to handler ([277c102](https://github.com/bordeux/webxash-metamod/commit/277c102))
+
 ## 1.1.0 (2026-01-14)
 
 * Merge pull request #1 from bordeux/feature/file-listing ([132a9f3](https://github.com/bordeux/webxash-metamod/commit/132a9f3)), closes [#1](https://github.com/bordeux/webxash-metamod/issues/1)

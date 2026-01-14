@@ -1,6 +1,6 @@
 [package]
 name = "webxash-metamod"
-version = "1.1.0"
+version = "1.1.1"
 edition = "2021"
 description = "WebRTC bridge Metamod plugin for Half-Life/CS 1.6"
 license = "MIT"
